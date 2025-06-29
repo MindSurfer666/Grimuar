@@ -1,0 +1,34 @@
+[
+  {
+    "object_name": "Григорий",
+    "object_1": false,
+    "object_3": false,
+    "object_7": false,
+    "object_14": false,
+    "object_31": false
+  },
+  {
+    "object_name": "Люда",
+    "object_1": true,
+    "object_3": false,
+    "object_7": false,
+    "object_14": false,
+    "object_31": false
+  },
+  {
+    "object_name": "Добро",
+    "object_1": true,
+    "object_3": false,
+    "object_7": false,
+    "object_14": false,
+    "object_31": false
+  },
+  {
+    "object_name": "сила",
+    "object_1": false,
+    "object_3": false,
+    "object_7": false,
+    "object_14": false,
+    "object_31": false
+  }
+]
