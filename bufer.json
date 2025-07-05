@@ -1,6 +1,22 @@
 [
   {
-    "object_name": "Григорий",
+    "object_name": "Взвешенное среднее ",
+    "object_1": true,
+    "object_3": true,
+    "object_7": false,
+    "object_14": false,
+    "object_31": false
+  },
+  {
+    "object_name": "Ошибка среднего",
+    "object_1": true,
+    "object_3": true,
+    "object_7": false,
+    "object_14": false,
+    "object_31": false
+  },
+  {
+    "object_name": "Байессовская линейная регрессия",
     "object_1": false,
     "object_3": false,
     "object_7": false,
@@ -8,24 +24,8 @@
     "object_31": false
   },
   {
-    "object_name": "Люда",
+    "object_name": "Частотная Линейная регрессия",
     "object_1": true,
-    "object_3": false,
-    "object_7": false,
-    "object_14": false,
-    "object_31": false
-  },
-  {
-    "object_name": "Добро",
-    "object_1": true,
-    "object_3": false,
-    "object_7": false,
-    "object_14": false,
-    "object_31": false
-  },
-  {
-    "object_name": "сила",
-    "object_1": false,
     "object_3": false,
     "object_7": false,
     "object_14": false,

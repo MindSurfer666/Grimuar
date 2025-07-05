@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Календарь</title>
+
+  <script src="index.global.min.js"></script>
+  <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      background-color: #1e1e1e;
+      font-family: 'San Francisco', 'Inter', sans-serif;
+      color: #d4d4d4;
+    }
+
+    #calendar {
+      max-width: 1000px;
+      margin: 40px auto;
+      background-color: #1e1e1e;
+      color: #d4d4d4;
+      border-radius: 6px;
+    }
+
+    .fc {
+      background-color: #1e1e1e;
+    }
+
+    .fc-toolbar-title {
+      color: #ffffff;
+    }
+
+    .fc-daygrid-day-number {
+      color: #cccccc;
+    }
+
+    .fc-day-today {
+      background-color: #2a2d2e !important;
+    }
+
+    .fc-event {
+      background-color: #0e639c;
+      border: none;
+      color: white;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .fc-event:hover {
+      background-color: #1177bb;
+    }
+
+    .fc-daygrid-event-dot {
+      background-color: white;
+    }
+
+    .fc-scrollgrid {
+      border-color: #3c3c3c;
+    }
+  </style>
+</head>
+<body>
+  <div id="calendar">Загрузка...</div>
+
+  <script>
+    let calendar;
+    let backend;
+
+    document.addEventListener('DOMContentLoaded', function () {
+      console.log("📦 DOM загружен");
+
+      if (!globalThis.FullCalendar) {
+        alert("❗ FullCalendar не определён");
+        return;
+      }
+
+      const calendarEl = document.getElementById('calendar');
+
+      calendar = new globalThis.FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        themeSystem: 'standard', // можно изменить на 'bootstrap' при желании
+        events: [],
+
+        // 🔗 Клик по событию
+        eventClick: function(info) {
+          if (backend && backend.markAsRepeated) {
+            backend.markAsRepeated(info.event.title);  // отправляем название
+          }
+        },
+
+        // 🧱 Рендер кастомного контента внутри события
+        eventContent: function(arg) {
+          const title = arg.event.title;
+          const category = arg.event.extendedProps?.category || "";
+          const tooltip = arg.event.extendedProps?.tooltip || "";
+
+          const innerHtml = `
+            <div style="font-weight: bold;">${title}</div>
+            <div style="font-size: 10px; color: #aaa">${category}</div>
+          `;
+
+          const wrapper = document.createElement('div');
+          wrapper.innerHTML = innerHtml;
+
+          // Tooltip через стандартный title
+          wrapper.title = tooltip || `${title} (${category})`;
+
+          return { domNodes: [wrapper] };
+        }
+      });
+
+      calendar.render();
+
+      // 📡 Подключаем WebChannel
+      new QWebChannel(qt.webChannelTransport, function (channel) {
+        console.log("📡 WebChannel подключён");
+        backend = channel.objects.backend;
+
+        backend.sendEvents.connect(function (eventsJson) {
+          const events = JSON.parse(eventsJson);
+          console.log("📥 События:", events);
+          calendar.removeAllEvents();
+          calendar.addEventSource(events);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
